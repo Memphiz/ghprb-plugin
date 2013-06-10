@@ -102,11 +102,7 @@ public class GhprbPullRequest{
 
 	private void build(){
 		shouldRun = false;
-		String message = ml.getBuilds().build(this);
-
-		repo.createCommitStatus(head, GHCommitState.PENDING, null, message,id);
-
-		logger.log(Level.INFO, message);
+		ml.getBuilds().build(this);
 	}
 
 	// returns false if no new commit

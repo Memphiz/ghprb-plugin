@@ -108,7 +108,7 @@ public final class GhprbTrigger extends Trigger<AbstractProject<?, ?>> {
 		values.add(new StringParameterValue("ghprbPullId",String.valueOf(cause.getPullID())));
 		values.add(new StringParameterValue("ghprbTargetBranch",String.valueOf(cause.getTargetBranch())));
 
-		return this.job.scheduleBuild2(0,cause,new ParametersAction(values));
+		return job.scheduleBuild2(job.getQuietPeriod(), cause, new ParametersAction(values));
 	}
 
 	private ArrayList<ParameterValue> getDefaultParameters() {
