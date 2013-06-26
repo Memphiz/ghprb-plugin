@@ -130,6 +130,8 @@ public class GhprbRepository {
 	}
 
 	public void addComment(int id, String comment) {
+		if (comment.isEmpty())
+			return;
 		try {
 			repo.getPullRequest(id).comment(comment);
 		} catch (IOException ex) {
@@ -177,8 +179,7 @@ public class GhprbRepository {
 					Level.SEVERE,
 					"Couldn't create web hook for repository "+
 					reponame+
-					". Does the user (from global configuration) have admin rights to the repository?",
-					ex);
+					". Does the user (from global configuration) have admin rights to the repository?");
 			return false;
 		}
 	}
@@ -187,13 +188,13 @@ public class GhprbRepository {
 		return repo.getPullRequest(id);
 	}
 
-	void onIssueCommentHook(IssueComment issueComment) {
+	void onIssueCommentHook(IssueComment issueComment) throws IOException {
 		int id = issueComment.getIssue().getNumber();
 		if(logger.isLoggable(Level.FINER)){
 			logger.log(
 					Level.FINER,
-					"Comment on issue #{0}: '{1}'",
-					new Object[]{id,issueComment.getComment().getBody()});
+					"Comment on issue #{0} from {1}: {2}",
+					new Object[]{id,issueComment.getComment().getUser(),issueComment.getComment().getBody()});
 		}
 		if(!"created".equals(issueComment.getAction())) return;
 		GhprbPullRequest pull = pulls.get(id);
