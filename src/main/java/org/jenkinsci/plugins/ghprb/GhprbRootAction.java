@@ -72,7 +72,7 @@ public class GhprbRootAction implements UnprotectedRootAction {
 	private Set<GhprbRepository> getRepos(GHRepository repo) throws IOException{
 		try{
 			return getRepos(repo.getOwner().getLogin() + "/" + repo.getName());
-		}catch(IOException ex){
+		}catch(Exception ex){
 			logger.log(Level.WARNING, "Can't get a valid owner for repo");
 			// this normally happens due to missing "login" field in the owner of the repo
 			// when the repo is inside of an organisation account. The only field which doesn't
