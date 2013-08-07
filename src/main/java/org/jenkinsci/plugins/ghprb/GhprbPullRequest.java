@@ -89,6 +89,15 @@ public class GhprbPullRequest{
 			return;
 		}
 		if (shouldRun) {
+			GHPullRequest pr = null;
+			try{
+				pr = repo.getPullRequest(id);
+			} catch (IOException e){
+				logger.log(Level.SEVERE, "Couldn't get GHPullRequest for checking mergeable state");
+			}
+			if (pr != null){
+				checkMergeable(pr);
+			}
 			build();
 		}
 	}
